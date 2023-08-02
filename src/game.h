@@ -22,6 +22,8 @@ public:
     void Update();
     void Clear();
 
+    void newGeneration();
+
     void setBGColor(SDL_Color color) { bgColor = color; }
 
 private:
@@ -35,6 +37,6 @@ private:
     SDL_Color bgColor = { 0, 0, 0, SDL_ALPHA_OPAQUE};
 
     static const int gridSize = 5;
-    bool grid[600/gridSize][800/gridSize] = { 0 };
+    bool grid[720/gridSize][1280/gridSize] = { 0 };
 
 };

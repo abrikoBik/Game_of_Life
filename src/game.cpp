@@ -1,8 +1,20 @@
 #include "game.h"
 
+/*
+
+F1 - enter drawing mode
+F2 - enter rand mode
+
+r - reset(new generation/clear canvas)
+s - start sim
+t - stop sim
+
+*/
+
 bool simulationStart = false;
 bool drawing = false;
 int mouseX,mouseY;
+bool mode;
 
 void Game::Init(std::string title, int windowPosX, int windowPosY) 
 {   
@@ -48,6 +60,28 @@ void Game::Init(std::string title, int windowPosX, int windowPosY)
 
 }
 
+void Game::newGeneration()
+{
+    srand(time(NULL));
+    if(mode) {
+        for(int y = 0; y < SCREEN_HEIGHT/gridSize; y++)
+        {
+            for(int x = 0; x < SCREEN_WIDTH/gridSize; x++)
+            {
+                grid[y][x] = false;
+            }
+        }
+    } else {
+        for(int y = 0; y < SCREEN_HEIGHT/gridSize; y++)
+        {
+            for(int x = 0; x < SCREEN_WIDTH/gridSize; x++)
+            {
+                grid[y][x] = rand() % 2;
+            }
+        }
+    }
+}
+
 void Game::HandleEvent()
 {
     if(SDL_PollEvent(&event))
@@ -58,18 +92,31 @@ void Game::HandleEvent()
                 quit = true;
                 break;
             case SDL_KEYDOWN:
-                simulationStart = event.key.keysym.sym == SDLK_e;
+                if(event.key.keysym.sym == SDLK_r) {
+                    newGeneration();
+                } else if(event.key.keysym.sym == SDLK_s) {
+                    simulationStart = true;
+                } else if(event.key.keysym.sym == SDLK_t) {
+                    simulationStart = false;
+                } else if(event.key.keysym.sym == SDLK_F1) {
+                    mode = true;
+                } else if(event.key.keysym.sym == SDLK_F2) {
+                    mode = false;
+                }
                 break;
             case SDL_MOUSEMOTION:
                 SDL_GetMouseState(&mouseX, &mouseY);
                 break;
             case SDL_MOUSEBUTTONDOWN:
-                if(event.button.button == SDL_BUTTON_LEFT && !simulationStart) {
+                if(event.button.button == SDL_BUTTON_LEFT && !simulationStart && mode) {
                     drawing = true;
+                }
+                if(event.button.button == SDL_BUTTON_RIGHT && !simulationStart && mode) {
+                    grid[mouseY/gridSize][mouseX/gridSize] = false;
                 }
                 break;
             case SDL_MOUSEBUTTONUP:
-                if(event.button.button == SDL_BUTTON_LEFT) {
+                if(event.button.button == SDL_BUTTON_LEFT && mode) {
                     drawing = false;
                 }
                 break;
@@ -103,7 +150,7 @@ void Game::Render()
                     if(neighborSum < 2) grid[y][x] = false;
                     else if(neighborSum > 3) grid[y][x] = false;
                 } else {
-                    if(neighborSum >= 3) grid[y][x] = true;
+                    if(neighborSum == 3) grid[y][x] = true;
                 }
             }
 
