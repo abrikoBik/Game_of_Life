@@ -1,6 +1,4 @@
-# Game of Life
-v1. The same with any input data.
-v2. Now its Game Of Life actually!
+# Game of life
 
 controls:
   F1 - enter drawing mode
