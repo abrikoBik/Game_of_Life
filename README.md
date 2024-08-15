@@ -1,11 +1,11 @@
 # Game of life
 
-controls:\n
-  F1 - enter drawing mode\n
-  F2 - enter rand mode\n
-\n
-  r - reset(new generation/clear canvas)\n
-  s - start sim\n
-  t - stop sim\n
+controls:
+  F1 - enter drawing mode
+  F2 - enter rand mode
 
-( Req: you need SDL2, SDL2_image to compile )\n
+  r - reset(new generation/clear canvas)
+  s - start sim
+  t - stop sim
+
+( Req: you need SDL2, SDL2_image to compile )
